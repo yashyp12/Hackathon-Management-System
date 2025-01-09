@@ -31,7 +31,7 @@ export default function SignUp() {
     <div className="flex justify-center items-center min-h-screen bg-gradient-to-r from-blue-500 to-purple-600 p-6">
       <div className="bg-white p-8 rounded-lg shadow-lg w-full max-w-md">
         <h2 className="text-3xl font-bold text-center text-gray-800 mb-8">
-          Sign Up for an Account
+      Create an New Account
         </h2>
         <form onSubmit={handleSubmit} className="space-y-6">
           <div>
@@ -41,7 +41,7 @@ export default function SignUp() {
               className="w-full p-4 mt-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
               value={name}
               onChange={(e) => setName(e.target.value)}
-              required
+              required placeholder="Enter your name"
             />
           </div>
           <div>
@@ -51,7 +51,7 @@ export default function SignUp() {
               className="w-full p-4 mt-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              required
+              required placeholder="Please enter valid email"
             />
           </div>
           <div>

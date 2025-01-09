@@ -3,7 +3,7 @@
 import '/globals.css';
  import Navbar from '@/components/Navbar.js';
  import Footer from '@/components/Footer';
- 
+  
  
 export default function Layout({ children }) {
   return (
@@ -13,7 +13,7 @@ export default function Layout({ children }) {
             
             <Navbar />
            </header>
-          <main>{children}</main> {/* This renders the content of each page */}
+           <main>{children}</main> {/* This renders the content of each page */}
           
            <Footer />
         </body>

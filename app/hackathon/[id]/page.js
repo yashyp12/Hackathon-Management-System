@@ -3,12 +3,7 @@ export default function HackathonDetail({ params }) {
 
   // Fetch hackathon details by ID (mock data for now)
   const hackathon = {
-    id,
-    name: "Hackathon A",
-    description: "This is a detailed description of Hackathon A.",
-    date: "2024-12-10",
-    location: "Online",
-    participants: 100,
+
   };
 
   return (
