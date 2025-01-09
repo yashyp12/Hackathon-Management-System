@@ -7,7 +7,7 @@ export default function Home() {
     {
       id: 1,
       name: "CodeFest 2025",
-      location: "San Francisco, CA",
+      location: "Pune",
       prize: "$50,000",
       date: "2025-04-10",
       image: "https://via.placeholder.com/400x200?text=Hackathon+1",
@@ -23,7 +23,7 @@ export default function Home() {
     {
       id: 3,
       name: "InnovateX",
-      location: "Berlin, Germany",
+      location: "Mharashtra Mumbai",
       prize: "€30,000",
       date: "2025-06-01",
       image: "https://via.placeholder.com/400x200?text=Hackathon+3",
