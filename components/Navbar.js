@@ -11,6 +11,7 @@ export default function Navbar() {
           <Link href="/dashboard" className="text-white">Dashboard</Link>
           <Link href="/auth/signup" className="text-white">Register</Link>
           <Link href="/auth/signin" className="text-white">Sign In</Link>
+          <Link href="/profile" className="text-white">Profile</Link>
         </div>
         <div className="md:hidden">
           <button className="text-white">Menu</button>
