@@ -1,29 +1,8 @@
-"use client"
-import { useSession, signIn, signOut } from 'next-auth/react';
-import Link from 'next/link';
+"use client";
+import { useSession, signIn, signOut } from "next-auth/react";
+import Link from "next/link";
 
 export default function Home() {
-
-// const {data : session} = useSession()
-
-// if(session){
-//   return
-//   <>
-  
-//   Signed in as {session.user.email}
-//   <button onClick={()=>signOut()} >Signout</button>
-  
-//   </>
-// }
-
-
-// return <>
-
-// Not signed In <br />
-// <button onClick={()=> signIn}>Sign IN</button>
-// </>
-
-
   return (
     <div className="flex flex-col justify-center items-center min-h-screen bg-gradient-to-r from-blue-500 to-purple-600 p-6">
       <header className="text-center text-white">
@@ -38,23 +17,36 @@ export default function Home() {
       </header>
 
       <section className="mt-16 text-center text-white">
-        <h2 className="text-3xl font-semibold mb-6">Features</h2>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-          <div className="bg-white p-6 rounded-lg shadow-lg hover:shadow-xl transition duration-300">
-            <h3 className="text-xl font-semibold text-blue-600 mb-3">Manage Events</h3>
-            <p className="text-gray-700">Track hackathon events and deadlines effortlessly.</p>
+        <h2 className="text-3xl font-semibold mb-6">Upcoming Hackathon</h2>
+
+
+
+
+        <div className="container grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {/* Tailwind Card */}
+          <div className="relative flex flex-col w-full rounded-xl bg-white bg-clip-border text-gray-700 shadow-md">
+            <div className="relative mx-4 -mt-6 h-40 overflow-hidden rounded-xl bg-blue-gray-500 bg-clip-border text-white shadow-lg shadow-blue-gray-500/40 bg-gradient-to-r from-blue-500 to-blue-600"></div>
+            <div className="p-6">
+              <h5 className="mb-2 block font-sans text-xl font-semibold leading-snug tracking-normal text-blue-gray-900 antialiased">
+                Tailwind Card
+              </h5>
+              <p className="block font-sans text-base font-light leading-relaxed text-inherit antialiased">
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc felis ligula.
+              </p>
+            </div>
+            <div className="p-6 pt-0">
+              <button
+                data-ripple-light="true"
+                type="button"
+                className="select-none rounded-lg bg-blue-500 py-3 px-6 text-center align-middle font-sans text-xs font-bold uppercase text-white shadow-md shadow-blue-500/20 transition-all hover:shadow-lg hover:shadow-blue-500/40 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
+              >
+                Read More
+              </button>
+            </div>
           </div>
-          <div className="bg-white p-6 rounded-lg shadow-lg hover:shadow-xl transition duration-300">
-            <h3 className="text-xl font-semibold text-blue-600 mb-3">Participants</h3>
-            <p className="text-gray-700">Easily manage registered participants.</p>
-          </div>
-          <div className="bg-white p-6 rounded-lg shadow-lg hover:shadow-xl transition duration-300">
-            <h3 className="text-xl font-semibold text-blue-600 mb-3">Analytics</h3>
-            <p className="text-gray-700">Get insights into event statistics and engagement.</p>
-          </div>
+          {/* Add additional cards below if needed */}
         </div>
       </section>
     </div>
   );
 }
-

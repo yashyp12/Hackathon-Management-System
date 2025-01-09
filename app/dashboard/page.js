@@ -1,28 +1,36 @@
 // app/dashboard/page.js
 "use client";  // This marks the component as a Client Component
 
-// import { useSession } from "next-auth/react";
-import { useRouter } from "next/navigation"; // For navigation within Next.js
+import { useEffect, useState } from "react";
+import { auth } from "../../lib/firebase";  // Correct path to firebase.js
+import { onAuthStateChanged } from "firebase/auth";
+import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 export default function Dashboard() {
-  // const { data: session, status } = useSession();  // Getting session data
+  const [user, setUser] = useState(null);
   const router = useRouter();
 
-  // // If the session is still loading, we don't want to render anything yet
-  // if (status === "loading") {
-  //   return <div>Loading...</div>;
-  // }
+  useEffect(() => {
+    // Listen for changes in the user's authentication state
+    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+      if (currentUser) {
+        setUser(currentUser);  // Set the user when authenticated
+      } else {
+        router.push("/auth/signin");  // Redirect to sign-in if not authenticated
+      }
+    });
 
-  // // If there is no session, redirect to the login page
-  // if (!session) {
-  //   router.push("/auth/signin");
-  //   return null; // Return null to prevent rendering the page
-  // }
+    return () => unsubscribe();  // Clean up the listener on unmount
+  }, [router]);
+
+  if (!user) {
+    return <div>Loading...</div>;  // Optionally show a loading screen while checking authentication
+  }
 
   return (
     <div className="max-w-7xl mx-auto p-4">
-      {/* <h1 className="text-2xl font-bold mb-4">Welcome, {session.user.name}</h1> */}
-      <h1 className="text-2xl font-bold mb-4">Welcome</h1>
+      <h1 className="text-2xl font-bold mb-4">Welcome, {user.displayName || user.email}</h1>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         {/* Card 1 */}
         <div className="bg-white p-6 rounded-lg shadow-lg">

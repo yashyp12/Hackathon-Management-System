@@ -1,24 +1,25 @@
-'use client'
-import { signIn } from "next-auth/react";
+// app/auth/signin/page.js
+"use client";  // This marks the component as a Client Component
+
 import { useState } from "react";
-import Link from "next/link";
+import { signInWithEmailAndPassword } from "firebase/auth";
+import { auth } from "../../../lib/firebase";  // Correct path to firebase.js
+import { useRouter } from "next/navigation";
+import Link from "next/link";  // Import Link from next/link
 
 export default function SignIn() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const router = useRouter();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const result = await signIn("credentials", {
-      email,
-      password,
-      redirect: false, // Prevents automatic redirection
-    });
-
-    if (result.error) {
+    try {
+      await signInWithEmailAndPassword(auth, email, password);
+      router.push("/dashboard");  // Redirect to the dashboard after successful login
+    } catch (error) {
+      console.error(error);
       alert("Invalid credentials");
-    } else {
-      window.location.href = "/dashboard"; // Redirect to the dashboard
     }
   };
 
@@ -58,7 +59,7 @@ export default function SignIn() {
         </form>
         <div className="mt-6 text-center">
           <p className="text-gray-600">
-            Don't have an account?{" "}
+            Don&apos;t have an account?{" "}
             <Link href="/auth/signup" className="text-blue-500 font-semibold">
               Sign Up
             </Link>
