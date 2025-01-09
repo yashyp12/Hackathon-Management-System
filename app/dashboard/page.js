@@ -1,77 +1,40 @@
-"use client";  // Marks the component as a Client Component
+"use client";
 
 import { useEffect, useState } from "react";
-import { auth, db } from "../../lib/firebase"; // Correctly import Firestore and Auth
-import { onAuthStateChanged } from "firebase/auth";
-import { collection, getDocs, query, where } from "firebase/firestore";
-import { useRouter } from "next/navigation";
 
 export default function Dashboard() {
-  const [user, setUser] = useState(null);
   const [participatedHackathons, setParticipatedHackathons] = useState([]);
-  const [upcomingHackathons, setUpcomingHackathons] = useState([]);
-  const router = useRouter();
 
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
-      if (currentUser) {
-        setUser(currentUser);
-        fetchParticipatedHackathons(currentUser.uid);
-        fetchUpcomingHackathons();
-      } else {
-        router.push("/auth/signin");
-      }
-    });
+    const storedHackathons = JSON.parse(localStorage.getItem("participatedHackathons")) || [];
+    setParticipatedHackathons(storedHackathons);
+  }, []);
 
-    return () => unsubscribe();
-  }, [router]);
-
-  const fetchParticipatedHackathons = async (userId) => {
-    try {
-      const q = query(
-        collection(db, "hackathons"),
-        where("participants", "array-contains", userId)
-      );
-      const querySnapshot = await getDocs(q);
-      const hackathons = querySnapshot.docs.map((doc) => ({
-        id: doc.id,
-        ...doc.data(),
-      }));
-      setParticipatedHackathons(hackathons);
-    } catch (error) {
-      console.error("Error fetching participated hackathons:", error);
-    }
+  const removeParticipation = (hackathonId) => {
+    const updatedHackathons = participatedHackathons.filter((hackathon) => hackathon.id !== hackathonId);
+    setParticipatedHackathons(updatedHackathons);
+    localStorage.setItem("participatedHackathons", JSON.stringify(updatedHackathons));
+    alert("You have been removed from the hackathon.");
   };
-
-  const fetchUpcomingHackathons = async () => {
-    try {
-      const querySnapshot = await getDocs(collection(db, "hackathons"));
-      const hackathons = querySnapshot.docs
-        .map((doc) => ({
-          id: doc.id,
-          ...doc.data(),
-        }))
-        .filter((hackathon) => new Date(hackathon.date) > new Date());
-      setUpcomingHackathons(hackathons);
-    } catch (error) {
-      console.error("Error fetching upcoming hackathons:", error);
-    }
-  };
-
-  if (!user) {
-    return <div>Loading...</div>;
-  }
 
   return (
     <div className="max-w-7xl mx-auto p-4">
-      <h1 className="text-2xl font-bold mb-4">Welcome, {user.email}</h1>
-      <section className="mb-8">
-        <h2 className="text-xl font-semibold">Your Participated Hackathons</h2>
+      <h1 className="text-2xl font-bold mb-4">Dashboard</h1>
+      <section>
+        <h2 className="text-xl font-semibold mb-4">Your Participated Hackathons</h2>
         {participatedHackathons.length > 0 ? (
-          <ul className="list-disc pl-6">
+          <ul className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {participatedHackathons.map((hackathon) => (
-              <li key={hackathon.id} className="mb-2">
-                {hackathon.name} - {new Date(hackathon.date).toLocaleDateString()}
+              <li key={hackathon.id} className="p-4 bg-white rounded-lg shadow">
+                <h3 className="text-lg font-semibold">{hackathon.name}</h3>
+                <p className="text-sm text-gray-600">{hackathon.description}</p>
+                <p className="text-sm text-gray-500 mt-2">Date: {hackathon.date}</p>
+                <button
+                  onClick={() => removeParticipation(hackathon.id)}
+                  className="mt-4 px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600"
+                >
+                  Remove
+                </button>
               </li>
             ))}
           </ul>
@@ -79,35 +42,6 @@ export default function Dashboard() {
           <p>You have not participated in any hackathons yet.</p>
         )}
       </section>
-      <section>
-        <h2 className="text-xl font-semibold">Upcoming Hackathons</h2>
-        {upcomingHackathons.length > 0 ? (
-          <ul className="list-disc pl-6">
-            {upcomingHackathons.map((hackathon) => (
-              <li key={hackathon.id} className="mb-2">
-                {hackathon.name} - {new Date(hackathon.date).toLocaleDateString()}
-                <button
-                  className="ml-4 px-3 py-1 bg-blue-500 text-white rounded"
-                  onClick={() => registerForHackathon(hackathon.id)}
-                >
-                  Register
-                </button>
-              </li>
-            ))}
-          </ul>
-        ) : (
-          <p>No upcoming hackathons at the moment.</p>
-        )}
-      </section>
     </div>
   );
 }
-
-const registerForHackathon = async (hackathonId) => {
-  try {
-    // Update Firestore with the user's participation
-    console.log("Registering for hackathon:", hackathonId);
-  } catch (error) {
-    console.error("Error registering for hackathon:", error);
-  }
-};

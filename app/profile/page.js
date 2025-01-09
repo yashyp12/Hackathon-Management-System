@@ -3,6 +3,8 @@
 import { useState, useEffect } from "react";
 import { auth, db } from "../../lib/firebase";
 import { doc, getDoc, updateDoc } from "firebase/firestore";
+import { PhoneAuthCredential } from "firebase/auth";
+// import Email from "next-auth/providers/email";
 
 export default function Profile() {
   const [user, setUser] = useState(null);
@@ -44,11 +46,23 @@ export default function Profile() {
         value={name}
         onChange={(e) => setName(e.target.value)}
       />
+   
+     
+      <label className="block mb-2">Phone</label>
+      <input
+        type="text"
+        className="border p-2 w-full mb-4"
+        value={PhoneAuthCredential}
+        onChange={(e) => setName(e.target.value)}
+      />
+   
+     
+       
       <button
         className="px-4 py-2 bg-blue-500 text-white rounded"
         onClick={handleSave}
       >
-        Save Changes
+        Update Profile
       </button>
     </div>
   );

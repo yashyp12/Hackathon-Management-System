@@ -1,112 +1,105 @@
 "use client";
-import { useState } from "react";
+import Link from "next/link";
+
 
 export default function Home() {
-  // Demo data for upcoming hackathons
-  const hackathonsData = [
+  // Sample data for hackathons
+  const hackathons = [
     {
-      id: "1",
-      name: "Hackathon 2025",
-      date: "2025-02-15",
-      description: "Join the ultimate hackathon and showcase your skills!",
+      id: 1,
+      name: "CodeFest 2025",
+      location: "Jalgaon",
+      prize: "$50,000",
+      date: "2025-04-10",
+      image: "https://media.licdn.com/dms/image/v2/D5612AQE-MyT6EjJ3VA/article-cover_image-shrink_720_1280/article-cover_image-shrink_720_1280/0/1707483130571?e=2147483647&v=beta&t=akOzQLvcyfiiyyOhPBiUdp3Ol1cuoNCizpCjX8z4r4M",
     },
     {
-      id: "2",
-      name: "Tech Fest 2025",
-      date: "2025-03-10",
-      description: "Explore new technologies and innovate at Tech Fest.",
+      id: 2,
+      name: "DevHack",
+      location: "Online",
+      prize: "$20,000",
+      date: "2025-03-15",
+      image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSoR8bzppiYo9rIHOaSkENUMfX0qD6fefoskA&s",
     },
     {
-      id: "3",
-      name: "AI Innovation Hackathon",
-      date: "2025-04-05",
-      description: "Build AI-driven solutions to real-world problems.",
+      id: 3,
+      name: "InnovateX",
+      location: "Mumbai",
+      prize: "€30,000",
+      date: "2025-06-01",
+      image: "https://www.kreativdistrikt.com/wp-content/uploads/2024/02/The-Art-of-Successful-Hackathon-Management.webp",
     },
   ];
 
-  // State to track participated hackathons
-  const [participatedHackathons, setParticipatedHackathons] = useState([]);
-
-  // Handle participation
-  const handleParticipate = (hackathon) => {
-    if (!participatedHackathons.some((h) => h.id === hackathon.id)) {
-      setParticipatedHackathons([...participatedHackathons, hackathon]);
-      alert(`${hackathon.name} added to your dashboard!`);
-    }
-  };
-
-  // Handle removal
-  const handleRemove = (hackathon) => {
-    setParticipatedHackathons(
-      participatedHackathons.filter((h) => h.id !== hackathon.id)
-    );
-    alert(`${hackathon.name} removed from your dashboard.`);
-  };
-
   return (
     <div className="flex flex-col justify-center items-center min-h-screen bg-gradient-to-r from-blue-500 to-purple-600 p-6">
+      {/* Header Section */}
       <header className="text-center text-white">
-        <h1 className="text-5xl font-extrabold mb-4">Hackathon Management App</h1>
-        <p className="text-xl mb-6">Manage hackathons, events, and participants efficiently.</p>
-        <button
+
+        <br /><br /><br /><br />
+        <h1 className="text-5xl font-extrabold mb-4">Explore the upcoming hackathons</h1>
+        <p className="text-xl mb-6">
+          Manage hackathons, events, and participants efficiently.
+        </p>
+        <Link
+          href="/auth/signin"
           className="bg-white text-blue-500 py-3 px-8 rounded-full text-xl hover:bg-blue-100 transition duration-300"
-          onClick={() => alert("Redirect to Sign In or Dashboard")}
         >
           Get Started
-        </button>
+        </Link>
       </header>
 
+      {/* Hackathons Section */}
       <section className="mt-16 text-center text-white">
-        <h2 className="text-3xl font-semibold mb-6">Upcoming Hackathons</h2>
-        <div className="container grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {hackathonsData.map((hackathon) => (
+         <div className="container grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          {hackathons.map((hackathon) => (
             <div
               key={hackathon.id}
-              className="relative flex flex-col w-full rounded-xl bg-white bg-clip-border text-gray-700 shadow-md"
+              className="relative flex flex-col w-full rounded-lg bg-white shadow-md overflow-hidden transition-transform transform hover:scale-105"
             >
-              <div className="relative mx-4 -mt-6 h-40 overflow-hidden rounded-xl bg-gradient-to-r from-blue-500 to-blue-600 text-white shadow-lg"></div>
+              <img
+                src={hackathon.image}
+                alt={hackathon.name}
+                className="w-full h-40 object-cover"
+              />
               <div className="p-6">
-                <h5 className="mb-2 block font-sans text-xl font-semibold leading-snug tracking-normal text-blue-gray-900 antialiased">
-                  {hackathon.name}
-                </h5>
-                <p className="block font-sans text-base font-light leading-relaxed text-inherit antialiased">
-                  {hackathon.description}
-                </p>
-                <p className="mt-2 text-sm text-gray-500">Date: {hackathon.date}</p>
-              </div>
-              <div className="p-6 pt-0 flex gap-4">
-                <button
-                  onClick={() => handleParticipate(hackathon)}
-                  className="select-none rounded-lg bg-green-500 py-2 px-4 text-center align-middle font-sans text-sm font-bold uppercase text-white shadow-md transition-all hover:shadow-lg focus:opacity-[0.85]"
-                >
-                  Participate
-                </button>
-                <button
-                  onClick={() => handleRemove(hackathon)}
-                  className="select-none rounded-lg bg-red-500 py-2 px-4 text-center align-middle font-sans text-sm font-bold uppercase text-white shadow-md transition-all hover:shadow-lg focus:opacity-[0.85]"
-                >
-                  Remove
-                </button>
+                <h3 className="text-xl font-bold text-gray-800">{hackathon.name}</h3>
+                <p className="text-gray-600">📍 {hackathon.location}</p>
+                <p className="text-gray-600">🏆 Prize: {hackathon.prize}</p>
+                <p className="text-gray-600">📅 Date: {hackathon.date}</p>
+                <div className="mt-4">
+                  <Link
+                    href={`/hackathon/${hackathon.id}`}
+                    className="inline-block bg-blue-500 text-white py-2 px-4 rounded-lg shadow hover:bg-blue-600 transition"
+                  >
+                    View Details
+                  </Link>
+                </div>
               </div>
             </div>
           ))}
         </div>
       </section>
 
-      <section className="mt-16 text-center text-white">
-        <h2 className="text-3xl font-semibold mb-6">Your Participated Hackathons</h2>
-        {participatedHackathons.length > 0 ? (
-          <ul className="list-disc pl-6 text-left text-white">
-            {participatedHackathons.map((hackathon) => (
-              <li key={hackathon.id} className="mb-2">
-                {hackathon.name} - {hackathon.date}
-              </li>
-            ))}
-          </ul>
-        ) : (
-          <p>No participated hackathons yet.</p>
-        )}
+      {/* Hero Section */}
+      <section className="mt-16 bg-white py-16 w-full text-center">
+        <div className="container mx-auto px-6">
+          <h2 className="text-4xl font-extrabold text-gray-800 mb-6">
+            Why Participate in Hackathons?
+          </h2>
+          <p className="text-lg text-gray-600 leading-relaxed mb-6">
+            Hackathons are a great way to showcase your skills, network with industry
+            professionals, and win exciting prizes. Whether you're a beginner or a pro,
+            there's something for everyone!
+          </p>
+          <Link
+            href="/hackathons"
+            className="inline-block bg-indigo-500 text-white py-3 px-8 rounded-lg shadow hover:bg-indigo-600 transition"
+          >
+            Explore More
+          </Link>
+        </div>
       </section>
-    </div>
+     </div>
   );
 }
