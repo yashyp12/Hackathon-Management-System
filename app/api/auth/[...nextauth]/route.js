@@ -1,46 +1,24 @@
 import NextAuth from "next-auth";
-import CredentialsProvider from "next-auth/providers/credentials";
+import GitHubProvider from "next-auth/providers/github";
 
-export const authOptions = {
+const handler = NextAuth({
   providers: [
-    CredentialsProvider({
-      name: "Credentials",
-      credentials: {
-        email: { label: "Email", type: "email" },
-        password: { label: "Password", type: "password" },
-      },
-      async authorize(credentials) {
-        const { email, password } = credentials;
-
-        // Here, you would normally verify the user with your database.
-        // For simplicity, we're allowing any email and password
-        if (email === "user@example.com" && password === "password123") {
-          return { id: 1, name: "User", email: "user@example.com" };
-        }
-        return null;
-      },
+    GitHubProvider({
+      clientId: process.env.GITHUB_ID,
+      clientSecret: process.env.GITHUB_SECRET,
     }),
   ],
-  pages: {
-    signIn: "/auth/signin", // Specify the custom sign-in page
-  },
-  session: {
-    strategy: "jwt",
-  },
   callbacks: {
-    async jwt({ token, user }) {
-      if (user) {
-        token.id = user.id;
-        token.email = user.email;
-      }
-      return token;
-    },
-    async session({ session, token }) {
-      session.user.id = token.id;
-      session.user.email = token.email;
+    async session({ session, token, user }) {
+      session.user = user;
       return session;
     },
+    async redirect({ url, baseUrl }) {
+      if (url.startsWith(baseUrl)) return url;
+      else if (url.startsWith("/")) return new URL(url, baseUrl).toString();
+      return baseUrl;
+    },
   },
-};
+});
 
-export default NextAuth(authOptions);
+export { handler as GET, handler as POST };

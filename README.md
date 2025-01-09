@@ -40,5 +40,25 @@ npm install
 
 npm run dev
 
+## 🔑 GitHub OAuth Setup
+
+To enable GitHub OAuth, follow these steps:
+
+1. Go to [GitHub Developer Settings](https://github.com/settings/developers).
+2. Click on "New OAuth App".
+3. Fill in the required fields:
+   - **Application name**: Hackathon Management System
+   - **Homepage URL**: `http://localhost:3000`
+   - **Authorization callback URL**: `http://localhost:3000/api/auth/callback/github`
+4. Click "Register application".
+5. Copy the **Client ID** and **Client Secret**.
+6. Create a `.env.local` file in the root of your project and add the following:
+
+```
+GITHUB_ID=your-client-id
+GITHUB_SECRET=your-client-secret
+```
+
+7. Restart your development server.
 
 --Yash Patil
