@@ -1,7 +1,6 @@
-"use client";
-
-import { useState } from "react";
+'use client'
 import { signIn } from "next-auth/react";
+import { useState } from "react";
 import Link from "next/link";
 
 export default function SignIn() {
@@ -13,13 +12,13 @@ export default function SignIn() {
     const result = await signIn("credentials", {
       email,
       password,
-      redirect: false,
+      redirect: false, // Prevents automatic redirection
     });
 
     if (result.error) {
       alert("Invalid credentials");
     } else {
-      window.location.href = "/dashboard";
+      window.location.href = "/dashboard"; // Redirect to the dashboard
     }
   };
 
@@ -59,7 +58,7 @@ export default function SignIn() {
         </form>
         <div className="mt-6 text-center">
           <p className="text-gray-600">
-            Don&apos;t have an account?{" "}
+            Don't have an account?{" "}
             <Link href="/auth/signup" className="text-blue-500 font-semibold">
               Sign Up
             </Link>

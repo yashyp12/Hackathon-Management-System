@@ -1,33 +1,46 @@
-// import NextAuth from "next-auth";
-// import GitHubProvider from "next-auth/providers/github";
+import NextAuth from "next-auth";
+import CredentialsProvider from "next-auth/providers/credentials";
 
-// export const authOptions = {
-//   providers: [
-//     GitHubProvider({
-//       clientId: process.env.GITHUB_CLIENT_ID,
-//       clientSecret: process.env.GITHUB_CLIENT_SECRET,
-//     }),
-//   ],
-//   pages: {
-//     signIn: "/auth/signin",
-//   },
-//   session: {
-//     strategy: "jwt", // Using JWT for session handling
-//   },
-//   callbacks: {
-//     async jwt({ token, user }) {
-//       if (user) {
-//         token.id = user.id;
-//       }
-//       return token;
-//     },
-//     async session({ session, token }) {
-//       session.user.id = token.id;
-//       return session;
-//     },
-//   },
-// };
+export const authOptions = {
+  providers: [
+    CredentialsProvider({
+      name: "Credentials",
+      credentials: {
+        email: { label: "Email", type: "email" },
+        password: { label: "Password", type: "password" },
+      },
+      async authorize(credentials) {
+        const { email, password } = credentials;
 
-// const handler = NextAuth(authOptions);
+        // Here, you would normally verify the user with your database.
+        // For simplicity, we're allowing any email and password
+        if (email === "user@example.com" && password === "password123") {
+          return { id: 1, name: "User", email: "user@example.com" };
+        }
+        return null;
+      },
+    }),
+  ],
+  pages: {
+    signIn: "/auth/signin", // Specify the custom sign-in page
+  },
+  session: {
+    strategy: "jwt",
+  },
+  callbacks: {
+    async jwt({ token, user }) {
+      if (user) {
+        token.id = user.id;
+        token.email = user.email;
+      }
+      return token;
+    },
+    async session({ session, token }) {
+      session.user.id = token.id;
+      session.user.email = token.email;
+      return session;
+    },
+  },
+};
 
-// export { handler as GET, handler as POST };
+export default NextAuth(authOptions);
