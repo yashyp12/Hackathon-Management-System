@@ -3,7 +3,7 @@ export default function HackathonDetail({ params }) {
 
   // Fetch hackathon details by ID (mock data for now)
   const hackathon = {
-
+ 
   };
 
   return (
